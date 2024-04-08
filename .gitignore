@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# CodeLite IDE
+*.mk
+*.txt
+*.project
+*.workspace
+compile_commands.json
+Makefile
+.cache/
+.codelite/
+*.session
+*.tags
+tags
+
+.clang-format
+.clangd
+
+# Builds
+Debug/
+build-Debug/
