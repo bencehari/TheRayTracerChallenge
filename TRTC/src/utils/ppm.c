@@ -31,6 +31,7 @@ enum PPM_ErrCode ppm_save(const char* _name, const int _width, const int _height
 	fputs("255\n", file);
 	
 	{
+		// max: 3 x 255 (9) + 2 x ' ' (2) + '\0' (1)
 		char tmp[12];
 		for (int i = 0, c = 0; i < _width * _height * 3; i += 3) {
 			if (sprintf(tmp, "%d %d %d", _colors[i], _colors[i + 1], _colors[i + 2]) < 0) {
