@@ -1,17 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL.h>
+// #include <SDL2/SDL.h>
 
 #include "core/canvas.h"
 #include "core/color.h"
 #include "core/tuple.h"
 
-int main(int argc, char **argv)
-{
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+int main(int argc, char **argv) {
+	/*if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		printf("Failed to init SDL. Error: %s\n", SDL_GetError());
 		return EXIT_FAILURE;
-	}
+	}*/
 	
 	int width = 900;
 	int height = 550;
