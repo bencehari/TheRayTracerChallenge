@@ -13,12 +13,26 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 	
-	int width = 2;
-	int height = 1;
+	int width = 900;
+	int height = 550;
 	
 	canvas_initialize(width, height, COLOR_BLACK);
 	
-	canvas_set_pixel(1, 0, COLOR_WHITE);
+	struct Tuple projectilePos = new_point(.0f, 1.0f, .0f);
+	struct Tuple velocity = tuple_mul_f(tuple_norm(new_vector(1.0f, 1.8f, .0f)), 11.25f);
+	struct Tuple gravity = new_vector(.0f, -.1f, .0f);
+	struct Tuple wind = new_vector(-.01f, .0f, .0f);
+	
+	while (projectilePos.y > .0f) {
+		canvas_set_pixel(
+			(int)projectilePos.x,
+			(int)(height - projectilePos.y),
+			COLOR_RED);
+		
+		tuple_add_self(&projectilePos, velocity);
+		tuple_add_self(&velocity, gravity);
+		tuple_add_self(&velocity, wind);
+	}
 	
 	canvas_save_to_ppm("test_test");
 	
