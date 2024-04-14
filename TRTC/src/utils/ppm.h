@@ -1,6 +1,8 @@
 #ifndef TRTC_PPM_H
 #define TRTC_PPM_H
 
+#include <stdint.h>
+
 enum PPM_ErrCode {
 	PPM_NONE,
 	PPM_FILE,
@@ -15,6 +17,6 @@ enum PPM_ErrCode {
  * @param _height Height
  * @param _colors Colors represented between 0-255.
  */
-enum PPM_ErrCode ppm_save(const char* _name, const int _width, const int _height, const int _colors[]);
+enum PPM_ErrCode ppm_save(const char* _name, const int _width, const int _height, const uint8_t _colors[]);
 
 #endif // TRTC_PPM_H

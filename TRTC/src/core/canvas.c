@@ -37,10 +37,10 @@ int canvas_get_pixel_count(void) {
 	return width * height;
 }
 
-void canvas_get_as_int_array(int _colors[]) {
+void canvas_get_as_int_array(uint8_t _colors[]) {
 	for (int is = 0, id = 0; is < width * height; is++, id += 3) {
-		_colors[id] = (int)(canvas[is].r * 255);
-		_colors[id + 1] = (int)(canvas[is].g * 255);
-		_colors[id + 2] = (int)(canvas[is].b * 255);
+		_colors[id] = (uint8_t)(canvas[is].r * 255);
+		_colors[id + 1] = (uint8_t)(canvas[is].g * 255);
+		_colors[id + 2] = (uint8_t)(canvas[is].b * 255);
 	}
 }
