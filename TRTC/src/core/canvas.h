@@ -6,14 +6,14 @@
 
 #include "color.h"
 
-extern bool canvas_initialize(int _width, int _height);
+extern bool canvas_initialize(int _width, int _height, struct Color _clearColor);
 
 extern void canvas_cleanup(void);
 
 extern void canvas_set_pixel(int _x, int _y, struct Color _c);
 
-extern int canvas_get_pixel_count(void);
+// extern void canvas_get_as_int_array(uint8_t _colors[]);
 
-extern void canvas_get_as_int_array(uint8_t _colors[]);
+extern void canvas_save_to_ppm(const char* _name);
 
 #endif // TRTC_CANVAS_H

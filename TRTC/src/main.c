@@ -5,7 +5,6 @@
 #include "core/canvas.h"
 #include "core/color.h"
 #include "core/tuple.h"
-#include "utils/ppm.h"
 
 int main(int argc, char **argv)
 {
@@ -14,58 +13,14 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 	
-	int width = 6;
-	int height = 6;
+	int width = 2;
+	int height = 1;
 	
-	canvas_initialize(width, height);
+	canvas_initialize(width, height, COLOR_BLACK);
 	
-	canvas_set_pixel(0, 0, COLOR_WHITE);
-	canvas_set_pixel(1, 0, COLOR_BLACK);
-	canvas_set_pixel(2, 0, COLOR_WHITE);
-	canvas_set_pixel(3, 0, COLOR_BLACK);
-	canvas_set_pixel(4, 0, COLOR_WHITE);
-	canvas_set_pixel(5, 0, COLOR_WHITE);
+	canvas_set_pixel(1, 0, COLOR_WHITE);
 	
-	canvas_set_pixel(0, 1, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(1, 1, COLOR_WHITE);
-	canvas_set_pixel(2, 1, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(3, 1, COLOR_WHITE);
-	canvas_set_pixel(4, 1, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(5, 1, COLOR_WHITE);
-	
-	canvas_set_pixel(0, 2, COLOR_WHITE);
-	canvas_set_pixel(1, 2, COLOR_BLACK);
-	canvas_set_pixel(2, 2, COLOR_WHITE);
-	canvas_set_pixel(3, 2, COLOR_BLACK);
-	canvas_set_pixel(4, 2, COLOR_WHITE);
-	canvas_set_pixel(5, 2, COLOR_WHITE);
-	
-	canvas_set_pixel(0, 3, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(1, 3, COLOR_WHITE);
-	canvas_set_pixel(2, 3, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(3, 3, COLOR_WHITE);
-	canvas_set_pixel(4, 3, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(5, 3, COLOR_WHITE);
-	
-	canvas_set_pixel(0, 4, COLOR_WHITE);
-	canvas_set_pixel(1, 4, COLOR_BLACK);
-	canvas_set_pixel(2, 4, COLOR_WHITE);
-	canvas_set_pixel(3, 4, COLOR_BLACK);
-	canvas_set_pixel(4, 4, COLOR_WHITE);
-	canvas_set_pixel(5, 4, COLOR_WHITE);
-	
-	canvas_set_pixel(0, 5, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(1, 5, COLOR_WHITE);
-	canvas_set_pixel(2, 5, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(3, 5, COLOR_WHITE);
-	canvas_set_pixel(4, 5, COLOR_WHITE); // COLOR_BLACK);
-	canvas_set_pixel(5, 5, COLOR_WHITE);
-	
-	int pixelCount = canvas_get_pixel_count();
-	int a[pixelCount * 3];
-	canvas_get_as_int_array(a);
-	
-	ppm_save("test_test", width, height, a);
+	canvas_save_to_ppm("test_test");
 	
 	canvas_cleanup();
 	
