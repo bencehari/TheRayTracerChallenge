@@ -16,4 +16,10 @@ extern void canvas_set_pixel(int _x, int _y, struct Color _c);
 
 extern void canvas_save_to_ppm(const char* _name);
 
+/**
+ * @brief 
+ * @param pixels must be size width * height
+ */
+extern void canvas_as_argb8888(uint32_t pixels[]);
+
 #endif // TRTC_CANVAS_H

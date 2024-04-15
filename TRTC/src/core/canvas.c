@@ -77,3 +77,23 @@ void canvas_save_to_ppm(const char* _name) {
 	
 	ppm_save(_name, width, height, a);
 }
+
+void canvas_as_argb8888(uint32_t pixels[]) {
+	union u {
+		struct c {
+			uint8_t a, r, g, b;
+		} src;
+		uint32_t dest;
+	};
+
+	for (int i = 0; i < width * height; i++) {
+		union u tmp;
+		tmp.src = (struct c) {
+			.a = (uint8_t)(canvas[i].b * 255),
+			.r = (uint8_t)(canvas[i].g * 255),
+			.g = (uint8_t)(canvas[i].r * 255),
+			.b = (uint8_t)(canvas[i].a * 255)
+		};
+		pixels[i] = tmp.dest;
+	}
+}
