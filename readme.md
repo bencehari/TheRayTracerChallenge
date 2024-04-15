@@ -6,7 +6,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
 
 **DevEnv:** CodeLite
 
-## Setup
+## Setup (macOS)
 
 - [Install CodeLite](https://codelite.org)
 
@@ -15,7 +15,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
 - Create C++ workspace in CodeLite
 
 - Create new project in workspace
-  <img src="readme_assets/new_project.png" alt="new_project" style="zoom:40%;" />
+  <img src="readme_assets/new_project.png" alt="new_project" style="zoom:20%;" />
 
 - Set paths and libs in project settings<img src="readme_assets/proj_settings_1.png" alt="project_settings_1" />
 
