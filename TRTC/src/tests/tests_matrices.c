@@ -16,6 +16,8 @@ void test_mul_identity_w_tuple(void);
 void test_transpose(void);
 void test_transpose_identity(void);
 void test_m2x2_determinant(void);
+void test_m4x4_submatrix(void);
+void test_m3x3_submatrix(void);
 
 void test_matrices(void) {
 	puts(AC_YELLOW "Matrix4x4" AC_RESET);
@@ -29,6 +31,8 @@ void test_matrices(void) {
 	test_transpose();
 	test_transpose_identity();
 	test_m2x2_determinant();
+	test_m4x4_submatrix();
+	test_m3x3_submatrix();
 }
 
 void test_comp_same(void) {
@@ -154,4 +158,38 @@ void test_m2x2_determinant(void) {
 	union Matrix2x2 m = { .e = { 1, 5, -3, 2 }};
 	float determinant = m2x2_determinant(&m);
 	printf("Calculating the determinant of a 2x2 matrix: %s\n", EVALUATE(determinant == 17.0f));
+}
+
+void test_m4x4_submatrix(void) {
+	union Matrix4x4 m = { .e = {
+		-6, 1, 1, 6,
+		-8, 5, 8, 6,
+		-1, 0, 8, 2,
+		-7, 1, -1, 1
+	}};
+	union Matrix3x3 exp = { .e = {
+		-6, 1, 6,
+		-8, 8, 6,
+		-7, -1, 1
+	}};
+	
+	union Matrix3x3 res = m4x4_submatrix(&m, 2, 1);
+	
+	printf("A submatrix of a 4x4 matrix is a 3x3 matrix: %s\n", EVALUATE(m3x3_eq(&res, &exp)));
+}
+
+void test_m3x3_submatrix(void) {
+	union Matrix3x3 m = { .e = {
+		1, 5, 0,
+		-3, 2, 7,
+		0, 6, -3
+	}};
+	union Matrix2x2 exp = { .e = {
+		-3, 2,
+		0, 6
+	}};
+	
+	union Matrix2x2 res = m3x3_submatrix(&m, 0, 2);
+	
+	printf("A submatrix of a 3x3 matrix is a 2x2 matrix: %s\n", EVALUATE(m2x2_eq(&res, &exp)));
 }
