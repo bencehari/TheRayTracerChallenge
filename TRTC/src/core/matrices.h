@@ -16,6 +16,11 @@ union Matrix4x4 {
 	float e[16];
 };
 
+union Matrix2x2 {
+	float m[2][2];
+	float e[4];
+};
+
 #define m4x4_IDENTITY (union Matrix4x4) { .e = { [0] = 1.0f, [5] = 1.0f, [10] = 1.0f, [15] = 1.0f } }
 
 static inline bool m4x4_eq(const union Matrix4x4* _m0, const union Matrix4x4* _m1) {
@@ -45,7 +50,7 @@ static inline union Matrix4x4 m4x4_mul(const union Matrix4x4* _m0, const union M
 }
 
 static inline union Tuple m4x4_mul_tuple(const union Matrix4x4* _m, const union Tuple* _t) {
-	return (union Tuple) {{
+	return {{
 		_m->m[0][0] * _t->x + _m->m[0][1] * _t->x + _m->m[0][2] * _t->x + _m->m[0][3] * _t->x,
 		_m->m[1][0] * _t->y + _m->m[1][1] * _t->y + _m->m[1][2] * _t->y + _m->m[1][3] * _t->y,
 		_m->m[2][0] * _t->z + _m->m[2][1] * _t->z + _m->m[2][2] * _t->z + _m->m[2][3] * _t->z,
@@ -54,17 +59,16 @@ static inline union Tuple m4x4_mul_tuple(const union Matrix4x4* _m, const union 
 }
 
 static inline void m4x4_transpose(union Matrix4x4* _m) {
-	*_m = (union Matrix4x4) {
-		.m = {
-			{ _m->m[0][0], _m->m[1][0], _m->m[2][0], _m->m[3][0] },
-			
-			{ _m->m[0][1], _m->m[1][1], _m->m[2][1], _m->m[3][1] },
-			
-			{ _m->m[0][2], _m->m[1][2], _m->m[2][2], _m->m[3][2] },
-			
-			{ _m->m[0][3], _m->m[1][3], _m->m[2][3], _m->m[3][3] }
-		}
-	};
+	*_m = {{
+		{ _m->m[0][0], _m->m[1][0], _m->m[2][0], _m->m[3][0] },
+		{ _m->m[0][1], _m->m[1][1], _m->m[2][1], _m->m[3][1] },
+		{ _m->m[0][2], _m->m[1][2], _m->m[2][2], _m->m[3][2] },
+		{ _m->m[0][3], _m->m[1][3], _m->m[2][3], _m->m[3][3] }
+	}};
+}
+
+static inline float m2x2_determinant(const union Matrix2x2* _m) {
+	return _m->e[0] * _m->e[3] - _m->e[1] * _m->e[2];
 }
 
 static inline void m4x4_print(const union Matrix4x4* _m) {
