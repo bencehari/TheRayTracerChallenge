@@ -5,7 +5,7 @@
 #include "../core/matrices.h"
 #include "../utils/consc.h"
 
-#define EVALUATE(_b) ((_b) ? (AC_GREEN "PASS" AC_RESET) : (AC_RED "FAIL" AC_RESET))
+#define EVALUATE(_expr) ((_expr) ? (AC_GREEN "PASS" AC_RESET) : (AC_RED "FAIL" AC_RESET))
 
 void test_matrices(void) {
 	puts(AC_YELLOW "Matrix4x4" AC_RESET);
@@ -66,7 +66,7 @@ void test_matrices(void) {
 	union Matrix4x4 mulRet = m4x4_mul(&mul, &mul1);
 	printf("Multiply: %s\n", EVALUATE(m4x4_eq(&mulRet, &mulRes)));
 	
-	union Matrix4x4 hm_identity = {
+	union Matrix4x4 hmIdentity = {
 		.e = {
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
@@ -76,7 +76,7 @@ void test_matrices(void) {
 	};
 	union Matrix4x4 identity = m4x4_IDENTITY;
 	
-	printf("Identity matrix: %s\n", EVALUATE(m4x4_eq(&hm_identity, &identity)));
+	printf("Identity matrix: %s\n", EVALUATE(m4x4_eq(&hmIdentity, &identity)));
 	
 	union Matrix4x4 mulId = {
 		.e = {
@@ -86,12 +86,36 @@ void test_matrices(void) {
 			4.0f, 8.0f, 16.0f, 32.0f
 		}
 	};
-	union Matrix4x4 mulIdRes = m4x4_mul(&mulId, &hm_identity);
+	union Matrix4x4 mulIdRes = m4x4_mul(&mulId, &hmIdentity);
 	
 	printf("Multiplying a matrix by the identity matrix: %s\n", EVALUATE(m4x4_eq(&mulId, &mulIdRes)));
 	
 	union Tuple tupleOrig = (union Tuple) {{ 1.0f, 2.0f, 3.0f, 4.0f }};
 	
-	union Tuple mulM4x4TupleRes = m4x4_mul_tuple(&hm_identity, &tupleOrig);
+	union Tuple mulM4x4TupleRes = m4x4_mul_tuple(&hmIdentity, &tupleOrig);
 	printf("Multiplying the identity matrix by a tuple: %s\n", EVALUATE(tuple_eq(tupleOrig, mulM4x4TupleRes)));
+	
+	union Matrix4x4 transposeOrig = (union Matrix4x4) {
+		.e = {
+			0, 9, 3, 0,
+			9, 8, 0, 8,
+			1, 8, 5, 3,
+			0, 0, 5, 8
+		}
+	};
+	union Matrix4x4 transposeExp = (union Matrix4x4) {
+		.e = {
+			0, 9, 1, 0,
+			9, 8, 8, 0,
+			3, 0, 5, 5,
+			0, 8, 3, 8
+		}
+	};
+	m4x4_transpose(&transposeOrig);
+	
+	printf("Transposing a matrix: %s\n", EVALUATE(m4x4_eq(&transposeOrig, &transposeExp)));
+	
+	m4x4_transpose(&hmIdentity);
+	
+	printf("Transposing the identity matrix: %s\n", EVALUATE(m4x4_eq(&hmIdentity, &identity)));
 }

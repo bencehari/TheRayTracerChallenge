@@ -53,6 +53,20 @@ static inline union Tuple m4x4_mul_tuple(const union Matrix4x4* _m, const union 
 	}};
 }
 
+static inline void m4x4_transpose(union Matrix4x4* _m) {
+	*_m = (union Matrix4x4) {
+		.m = {
+			{ _m->m[0][0], _m->m[1][0], _m->m[2][0], _m->m[3][0] },
+			
+			{ _m->m[0][1], _m->m[1][1], _m->m[2][1], _m->m[3][1] },
+			
+			{ _m->m[0][2], _m->m[1][2], _m->m[2][2], _m->m[3][2] },
+			
+			{ _m->m[0][3], _m->m[1][3], _m->m[2][3], _m->m[3][3] }
+		}
+	};
+}
+
 static inline void m4x4_print(const union Matrix4x4* _m) {
 	printf(
 		"%.3f %.3f %.3f %.3f\n"
