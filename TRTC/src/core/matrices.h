@@ -120,6 +120,27 @@ static inline float m3x3_cofactor(const union Matrix3x3* _m, int _row, int _col)
 	return m3x3_minor(_m, _row, _col) * ((_row + _col) % 2 != 0 ? -1 : 1);
 }
 
+static inline float m4x4_cofactor(const union Matrix4x4* _m, int _row, int _col) {
+#ifdef AD_CHK
+	LOG_W("Not implemented yet.");
+#endif
+	return 0.0f;
+}
+
+static inline float m3x3_determinant(const union Matrix3x3* _m) {
+#ifdef AD_CHK
+	LOG_W("Not implemented yet.");
+#endif
+	return 0.0f;
+}
+
+static inline float m4x4_determinant(const union Matrix4x4* _m) {
+#ifdef AD_CHK
+	LOG_W("Not implemented yet.");
+#endif
+	return 0.0f;
+}
+
 static inline void m4x4_print(const union Matrix4x4* _m) {
 	printf(
 		"%.3f %.3f %.3f %.3f\n"
