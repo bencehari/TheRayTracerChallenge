@@ -6,9 +6,12 @@
 #include "core/canvas.h"
 #include "core/color.h"
 #include "core/tuple.h"
+#include "core/matrices.h"
+
+#include "tests/tests.h"
 
 int main(int argc, char **argv) {
-	const int width = 900;
+	/*const int width = 900;
 	const int height = 550;
 	
 	canvas_initialize(width, height, COLOR_BLACK);
@@ -39,7 +42,9 @@ int main(int argc, char **argv) {
 	
 	render_update_screen(pixels);
 	
-	render_cleanup();
+	render_cleanup();*/
+	
+	test_matrices();
 	
 	puts("ALL DONE\n");
 	
