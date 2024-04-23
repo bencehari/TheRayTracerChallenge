@@ -111,6 +111,11 @@ static inline union Matrix2x2 m3x3_submatrix(const union Matrix3x3* _m, int _row
 	return ret;
 }
 
+static inline float m3x3_minor(const union Matrix3x3* _m, int _row, int _col) {
+	union Matrix2x2 subm = m3x3_submatrix(_m, _row, _col);
+	return m2x2_determinant(&subm);
+}
+
 static inline void m4x4_print(const union Matrix4x4* _m) {
 	printf(
 		"%.3f %.3f %.3f %.3f\n"

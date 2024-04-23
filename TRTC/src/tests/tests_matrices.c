@@ -18,6 +18,7 @@ void test_transpose_identity(void);
 void test_m2x2_determinant(void);
 void test_m4x4_submatrix(void);
 void test_m3x3_submatrix(void);
+void test_m3x3_minor(void);
 
 void test_matrices(void) {
 	puts(AC_YELLOW "Matrix4x4" AC_RESET);
@@ -33,6 +34,7 @@ void test_matrices(void) {
 	test_m2x2_determinant();
 	test_m4x4_submatrix();
 	test_m3x3_submatrix();
+	test_m3x3_minor();
 }
 
 void test_comp_same(void) {
@@ -192,4 +194,16 @@ void test_m3x3_submatrix(void) {
 	union Matrix2x2 res = m3x3_submatrix(&m, 0, 2);
 	
 	printf("A submatrix of a 3x3 matrix is a 2x2 matrix: %s\n", EVALUATE(m2x2_eq(&res, &exp)));
+}
+
+void test_m3x3_minor(void) {
+	union Matrix3x3 m = { .e = {
+		3, 5, 0,
+		2, -1, -7,
+		6, -1, 5
+	}};
+	
+	float minor = m3x3_minor(&m, 1, 0);
+	
+	printf("Calculating a minor of a 3x3 matrix: %s\n", EVALUATE(minor == 25.0f));
 }
