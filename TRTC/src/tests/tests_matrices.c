@@ -19,9 +19,10 @@ void test_m2x2_determinant(void);
 void test_m4x4_submatrix(void);
 void test_m3x3_submatrix(void);
 void test_m3x3_minor(void);
+void test_m3x3_cofactor(void);
 
 void test_matrices(void) {
-	puts(AC_YELLOW "Matrix4x4" AC_RESET);
+	puts(AC_YELLOW "Matrices" AC_RESET);
 	
 	test_comp_same();
 	test_comp_diff();
@@ -35,6 +36,7 @@ void test_matrices(void) {
 	test_m4x4_submatrix();
 	test_m3x3_submatrix();
 	test_m3x3_minor();
+	test_m3x3_cofactor();
 }
 
 void test_comp_same(void) {
@@ -206,4 +208,27 @@ void test_m3x3_minor(void) {
 	float minor = m3x3_minor(&m, 1, 0);
 	
 	printf("Calculating a minor of a 3x3 matrix: %s\n", EVALUATE(minor == 25.0f));
+}
+
+void test_m3x3_cofactor(void) {
+	union Matrix3x3 m = { .e = {
+		3, 5, 0,
+		2, -1, -7,
+		6, -1, 5
+	}};
+	
+	float minorA = m3x3_minor(&m, 0, 0);
+	float cofactorA = m3x3_cofactor(&m, 0, 0);
+	float minorB = m3x3_minor(&m, 1, 0);
+	float cofactorB = m3x3_cofactor(&m, 1, 0);
+	
+	/*printf(
+		"minorA: %.1f, cofactorA: %.1f\nminorB: %.1f, cofactorB: %.1f\n",
+		minorA, cofactorA, minorB, cofactorB);*/
+	
+	bool expected =
+		minorA == -12.0f && cofactorA == -12.0f &&
+		minorB == 25.0f && cofactorB == -25.0f;
+	
+	printf("Calculating a cofactor of a 3x3 matrix: %s\n", EVALUATE(expected));
 }
