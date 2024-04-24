@@ -23,3 +23,41 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
 
 - Enjoy
 
+## Progress
+
+- [x] Chapter One: Tuples, Points, and Vectors
+  - [x] Tuples
+  - [x] Operations
+  - [x] Putting It Together
+- [x] Chapter 2: Drawing on a Canvas
+  - [x] Representing Colors
+  - [x] Implementing Color Operations
+  - [x] Creating a Canvas
+  - [x] Saving a Canvas
+  - [x] Putting It Together
+- [ ] Chapter 3: Matrices
+  - [x] Creating a Matrix
+  - [x] Multiplying Matrices
+  - [x] The Identity Matrix
+  - [x] Transposing Matrices
+  - [ ] Inverting Matrices
+  - [ ] Putting It Together
+- [ ] Chapter 4: Matrix Transformations
+  - [ ] Translation
+  - [ ] Scaling
+  - [ ] Rotation
+  - [ ] Shearing
+  - [ ] Chaining Transformations
+  - [ ] Putting It Together
+- [ ] Chapter 5: Ray-Sphere Intersections
+  - [ ] Creating Rays
+  - [ ] Intersecting Rays with Spheres
+  - [ ] Tracking Intersections
+  - [ ] Identifying Hits
+  - [ ] Transforming Rays and Spheres
+  - [ ] Putting It Together
+- [ ] Chapter 6: Light and Shading
+  - [ ] Surface Normals
+  - [ ] Reflecting Vectors
+  - [ ] The Phong Reflection Model
+  - [ ] Putting It Together

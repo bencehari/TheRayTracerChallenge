@@ -26,6 +26,25 @@ union Matrix2x2 {
 	float e[4];
 };
 
+static bool m4x4_eq(const union Matrix4x4* _m0, const union Matrix4x4* _m1);
+static bool m3x3_eq(const union Matrix3x3* _m0, const union Matrix3x3* _m1);
+static bool m2x2_eq(const union Matrix2x2* _m0, const union Matrix2x2* _m1);
+static union Matrix4x4 m4x4_mul(const union Matrix4x4* _m0, const union Matrix4x4* _m1);
+static union Tuple m4x4_mul_tuple(const union Matrix4x4* _m, const union Tuple* _t);
+static void m4x4_transpose(union Matrix4x4* _m);
+static float m2x2_determinant(const union Matrix2x2* _m);
+static union Matrix3x3 m4x4_submatrix(const union Matrix4x4* _m, int _row, int _col);
+static union Matrix2x2 m3x3_submatrix(const union Matrix3x3* _m, int _row, int _col);
+static float m3x3_minor(const union Matrix3x3* _m, int _row, int _col);
+static float m4x4_minor(const union Matrix4x4* _m, int _row, int _col);
+static float m3x3_cofactor(const union Matrix3x3* _m, int _row, int _col);
+static float m4x4_cofactor(const union Matrix4x4* _m, int _row, int _col);
+static float m3x3_determinant(const union Matrix3x3* _m);
+static float m4x4_determinant(const union Matrix4x4* _m);
+static void m4x4_print(const union Matrix4x4* _m);
+static void m3x3_print(const union Matrix3x3* _m);
+static void m2x2_print(const union Matrix2x2* _m);
+
 #define m4x4_IDENTITY (union Matrix4x4) { .e = { [0] = 1.0f, [5] = 1.0f, [10] = 1.0f, [15] = 1.0f } }
 
 static inline bool m4x4_eq(const union Matrix4x4* _m0, const union Matrix4x4* _m1) {
@@ -90,6 +109,13 @@ static inline float m2x2_determinant(const union Matrix2x2* _m) {
 }
 
 static inline union Matrix3x3 m4x4_submatrix(const union Matrix4x4* _m, int _row, int _col) {
+#ifdef AD_CHK
+	if (_row < 0 || _row > 3 || _col < 0 || _row > 3) {
+		LOG_E("m4x4_submatrix: _row or _col out of bounds!");
+		exit(0);
+	}
+#endif // AD_CHK
+	
 	union Matrix3x3 ret;
 	for (int r = 0, i = 0; r < 4; r++) {
 		for (int c = 0; c < 4; c++) {
@@ -101,6 +127,13 @@ static inline union Matrix3x3 m4x4_submatrix(const union Matrix4x4* _m, int _row
 }
 
 static inline union Matrix2x2 m3x3_submatrix(const union Matrix3x3* _m, int _row, int _col) {
+#ifdef AD_CHK
+	if (_row < 0 || _row > 2 || _col < 0 || _row > 2) {
+		LOG_E("m3x3_submatrix: _row or _col out of bounds!");
+		exit(0);
+	}
+#endif // AD_CHK
+	
 	union Matrix2x2 ret;
 	for (int r = 0, i = 0; r < 3; r++) {
 		for (int c = 0; c < 3; c++) {
@@ -112,33 +145,65 @@ static inline union Matrix2x2 m3x3_submatrix(const union Matrix3x3* _m, int _row
 }
 
 static inline float m3x3_minor(const union Matrix3x3* _m, int _row, int _col) {
+#ifdef AD_CHK
+	if (_row < 0 || _row > 2 || _col < 0 || _row > 2) {
+		LOG_E("m3x3_minor: _row or _col out of bounds!");
+		exit(0);
+	}
+#endif // AD_CHK
+	
 	union Matrix2x2 subm = m3x3_submatrix(_m, _row, _col);
 	return m2x2_determinant(&subm);
 }
 
+static inline float m4x4_minor(const union Matrix4x4* _m, int _row, int _col) {
+#ifdef AD_CHK
+	if (_row < 0 || _row > 3 || _col < 0 || _row > 3) {
+		LOG_E("m4x4_minor: _row or _col out of bounds!");
+		exit(0);
+	}
+#endif // AD_CHK	
+
+	union Matrix3x3 subm = m4x4_submatrix(_m, _row, _col);
+	return m3x3_determinant(&subm);
+}
+
 static inline float m3x3_cofactor(const union Matrix3x3* _m, int _row, int _col) {
+#ifdef AD_CHK
+	if (_row < 0 || _row > 2 || _col < 0 || _row > 2) {
+		LOG_E("m3x3_cofactor: _row or _col out of bounds!");
+		exit(0);
+	}
+#endif // AD_CHK
+	
 	return m3x3_minor(_m, _row, _col) * ((_row + _col) % 2 != 0 ? -1 : 1);
 }
 
 static inline float m4x4_cofactor(const union Matrix4x4* _m, int _row, int _col) {
 #ifdef AD_CHK
-	LOG_W("Not implemented yet.");
-#endif
-	return 0.0f;
+	if (_row < 0 || _row > 3 || _col < 0 || _row > 3) {
+		LOG_E("m4x4_cofactor: _row or _col out of bounds!");
+		exit(0);
+	}
+#endif // AD_CHK
+	
+	return m4x4_minor(_m, _row, _col) * ((_row + _col) % 2 != 0 ? -1 : 1);
 }
 
 static inline float m3x3_determinant(const union Matrix3x3* _m) {
-#ifdef AD_CHK
-	LOG_W("Not implemented yet.");
-#endif
-	return 0.0f;
+	float ret = 0;
+	for (int i = 0; i < 3; i++) {
+		ret += _m->m[0][i] * m3x3_cofactor(_m, 0, i);
+	}
+	return ret;
 }
 
 static inline float m4x4_determinant(const union Matrix4x4* _m) {
-#ifdef AD_CHK
-	LOG_W("Not implemented yet.");
-#endif
-	return 0.0f;
+	float ret = 0;
+	for (int i = 0; i < 4; i++) {
+		ret += _m->m[0][i] * m4x4_cofactor(_m, 0, i);
+	}
+	return ret;
 }
 
 static inline void m4x4_print(const union Matrix4x4* _m) {
@@ -147,10 +212,28 @@ static inline void m4x4_print(const union Matrix4x4* _m) {
 		"%.3f %.3f %.3f %.3f\n"
 		"%.3f %.3f %.3f %.3f\n"
 		"%.3f %.3f %.3f %.3f\n",
-		_m->m[0][0], _m->m[0][1], _m->m[0][2], _m->m[0][3],
-		_m->m[1][0], _m->m[1][1], _m->m[1][2], _m->m[1][3],
-		_m->m[2][0], _m->m[2][1], _m->m[2][2], _m->m[2][3],
-		_m->m[3][0], _m->m[3][1], _m->m[3][2], _m->m[3][3]);
+		_m->e[ 0], _m->e[ 1], _m->e[ 2], _m->e[ 3],
+		_m->e[ 4], _m->e[ 5], _m->e[ 6], _m->e[ 7],
+		_m->e[ 8], _m->e[ 9], _m->e[10], _m->e[11],
+		_m->e[12], _m->e[13], _m->e[14], _m->e[15]);
+}
+
+static inline void m3x3_print(const union Matrix3x3* _m) {
+	printf(
+		"%.3f %.3f %.3f\n"
+		"%.3f %.3f %.3f\n"
+		"%.3f %.3f %.3f\n",
+		_m->e[ 0], _m->e[ 1], _m->e[ 2],
+		_m->e[ 3], _m->e[ 4], _m->e[ 5],
+		_m->e[ 6], _m->e[ 7], _m->e[ 8]);
+}
+
+static inline void m2x2_print(const union Matrix2x2* _m) {
+	printf(
+		"%.3f %.3f\n"
+		"%.3f %.3f\n",
+		_m->e[ 0], _m->e[ 1],
+		_m->e[ 2], _m->e[ 3]);
 }
 
 #endif // TRTC_MATRICES_H

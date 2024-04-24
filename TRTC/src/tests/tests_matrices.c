@@ -21,6 +21,7 @@ void test_m3x3_submatrix(void);
 void test_m3x3_minor(void);
 void test_m3x3_cofactor(void);
 void test_m3x3_determinant(void);
+void test_m4x4_cofactor(void);
 void test_m4x4_determinant(void);
 
 void test_matrices(void) {
@@ -40,6 +41,7 @@ void test_matrices(void) {
 	test_m3x3_minor();
 	test_m3x3_cofactor();
 	test_m3x3_determinant();
+	test_m4x4_cofactor();
 	test_m4x4_determinant();
 }
 
@@ -249,11 +251,39 @@ void test_m3x3_determinant(void) {
 	float cofactorC = m3x3_cofactor(&m, 0, 2);
 	float determinant = m3x3_determinant(&m);
 	
+	/*printf(
+		"%.1f %.1f %.1f %.1f\n",
+		cofactorA, cofactorB, cofactorC, determinant);*/
+	
 	bool expected =
 		cofactorA == 56.0f && cofactorB == 12.0f &&
 		cofactorC == -46.0f && determinant == -196;
 	
 	printf("Calculating the determinant of a 3x3 matrix: %s\n", EVALUATE(expected));
+}
+
+void test_m4x4_cofactor(void) {
+	union Matrix4x4 m = { .e = {
+		-2, -8, 3, 5,
+		-3, 1, 7, 3,
+		1, 2, -9, 6,
+		-6, 7, 7, -9
+	}};
+	
+	float cofactorA = m4x4_cofactor(&m, 0, 0);
+	float cofactorB = m4x4_cofactor(&m, 0, 1);
+	float cofactorC = m4x4_cofactor(&m, 0, 2);
+	float cofactorD = m4x4_cofactor(&m, 0, 3);
+	
+	/*printf(
+		"%.1f %.1f %.1f %.1f\n",
+		cofactorA, cofactorB, cofactorC, cofactorD);*/
+	
+	bool expected =
+		cofactorA == 690.0f && cofactorB == 447.0f &&
+		cofactorC == 210.0f && cofactorD == 51.0f;
+	
+	printf("Calculating the cofactors of a 4x4 matrix: %s\n", EVALUATE(expected));
 }
 
 void test_m4x4_determinant(void) {
