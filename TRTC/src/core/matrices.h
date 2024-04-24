@@ -206,6 +206,14 @@ static inline float m4x4_determinant(const union Matrix4x4* _m) {
 	return ret;
 }
 
+static inline bool m4x4_is_invertable(const union Matrix4x4* _m) {
+	return m4x4_determinant(_m) != 0.0f;
+}
+
+// ~~~~~~~~~~~
+// DEBUG
+// ~~~~~~~~~~~
+
 static inline void m4x4_print(const union Matrix4x4* _m) {
 	printf(
 		"%.3f %.3f %.3f %.3f\n"

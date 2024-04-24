@@ -23,6 +23,7 @@ void test_m3x3_cofactor(void);
 void test_m3x3_determinant(void);
 void test_m4x4_cofactor(void);
 void test_m4x4_determinant(void);
+void test_m4x4_is_invertable(void);
 
 void test_matrices(void) {
 	puts(AC_YELLOW "Matrices" AC_RESET);
@@ -43,6 +44,7 @@ void test_matrices(void) {
 	test_m3x3_determinant();
 	test_m4x4_cofactor();
 	test_m4x4_determinant();
+	test_m4x4_is_invertable();
 }
 
 void test_comp_same(void) {
@@ -306,4 +308,22 @@ void test_m4x4_determinant(void) {
 		determinant == -4071;
 	
 	printf("Calculating the determinant of a 4x4 matrix: %s\n", EVALUATE(expected));
+}
+
+void test_m4x4_is_invertable(void) {
+	union Matrix4x4 mInvertable = { .e = {
+		6, 4, 4, 4,
+		5, 5, 7, 6,
+		4, -9, 3, -7,
+		9, 1, 7, -6
+	}};
+	union Matrix4x4 mNotInvertable = { .e = {
+		-4, 2, -2, -3,
+		9, 6, 2, 6,
+		0, -5, 1, -5,
+		0, 0, 0, 0
+	}};
+	
+	printf("Testing an invertible matrix for invertibility: %s\n", EVALUATE(m4x4_is_invertable(&mInvertable)));
+	printf("Testing a noninvertible matrix for invertibility: %s\n", EVALUATE(!m4x4_is_invertable(&mNotInvertable)));
 }
