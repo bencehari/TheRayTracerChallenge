@@ -11,6 +11,7 @@
 void test_comp_same(void);
 void test_comp_diff(void);
 void test_multiply(void);
+void test_multiply_tuple(void);
 void test_identity(void);
 void test_mul_w_identity(void);
 void test_mul_identity_w_tuple(void);
@@ -38,6 +39,7 @@ void test_matrices(void) {
 	test_comp_same();
 	test_comp_diff();
 	test_multiply();
+	test_multiply_tuple();
 	test_identity();
 	test_mul_w_identity();
 	test_mul_identity_w_tuple();
@@ -142,6 +144,21 @@ void test_multiply(void) {
 	
 	union Matrix4x4 mulRet = m4x4_mul(&mul, &mul1);
 	printf("Multiply: %s\n", EVALUATE(m4x4_eq(&mulRet, &mulRes)));
+}
+
+void test_multiply_tuple(void) {
+	union Matrix4x4 m = { .e = {
+		1, 2, 3, 4,
+		2, 4, 4, 2,
+		8, 6, 4, 1,
+		0, 0, 0, 1
+	}};
+	union Tuple point = new_point(1.0f, 2.0f, 3.0f);
+	union Tuple expected = new_point(18.0f, 24.0f, 33.0f);
+	
+	union Tuple res = m4x4_mul_tuple(&m, &point);
+	
+	printf("A matrix multiplied by a tuple: %s\n", EVALUATE(tuple_eq(expected, res)));
 }
 
 void test_identity(void) {

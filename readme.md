@@ -49,7 +49,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
   - [x] Inverting Matrices
   - [x] Putting It Together
 - [ ] Chapter 4: Matrix Transformations
-  - [ ] Translation
+  - [x] Translation
   - [ ] Scaling
   - [ ] Rotation
   - [ ] Shearing

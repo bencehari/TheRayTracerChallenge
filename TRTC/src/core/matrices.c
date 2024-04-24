@@ -46,10 +46,10 @@ inline union Matrix4x4 m4x4_mul(const union Matrix4x4* _m0, const union Matrix4x
 
 inline union Tuple m4x4_mul_tuple(const union Matrix4x4* _m, const union Tuple* _t) {
 	return (union Tuple) {{
-		_m->e[ 0] * _t->x + _m->e[ 1] * _t->x + _m->e[ 2] * _t->x + _m->e[ 3] * _t->x,
-		_m->e[ 4] * _t->y + _m->e[ 5] * _t->y + _m->e[ 6] * _t->y + _m->e[ 7] * _t->y,
-		_m->e[ 8] * _t->z + _m->e[ 9] * _t->z + _m->e[10] * _t->z + _m->e[11] * _t->z,
-		_m->e[12] * _t->w + _m->e[13] * _t->w + _m->e[14] * _t->w + _m->e[15] * _t->w
+		_m->e[ 0] * _t->x + _m->e[ 1] * _t->y + _m->e[ 2] * _t->z + _m->e[ 3] * _t->w,
+		_m->e[ 4] * _t->x + _m->e[ 5] * _t->y + _m->e[ 6] * _t->z + _m->e[ 7] * _t->w,
+		_m->e[ 8] * _t->x + _m->e[ 9] * _t->y + _m->e[10] * _t->z + _m->e[11] * _t->w,
+		_m->e[12] * _t->x + _m->e[13] * _t->y + _m->e[14] * _t->z + _m->e[15] * _t->w
 	}};
 }
 

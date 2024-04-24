@@ -9,10 +9,12 @@
 
 void test_translation(void);
 void test_inverse_translation(void);
+void test_translate_vector(void);
 
 void test_transformations(void) {
 	test_translation();
 	test_inverse_translation();
+	test_translate_vector();
 }
 
 void test_translation(void) {
@@ -30,4 +32,12 @@ void test_inverse_translation(void) {
 	union Tuple res = m4x4_mul_tuple(&inverse, &point);
 	
 	printf("Multiplying by the inverse of a translation matrix: %s\n", EVALUATE(tuple_eq(res, new_point(-8, 7, 3))));
+}
+
+void test_translate_vector(void) {
+	union Matrix4x4 transform = m4x4_translation(new_point(5, -3, 2));
+	union Tuple vector = new_vector(-3, 4, 5);
+	union Tuple res = m4x4_mul_tuple(&transform, &vector);
+	
+	printf("Translation does not affect vectors: %s\n", EVALUATE(tuple_eq(res, vector)));
 }
