@@ -47,7 +47,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
   - [x] The Identity Matrix
   - [x] Transposing Matrices
   - [x] Inverting Matrices
-  - [ ] Putting It Together
+  - [x] Putting It Together
 - [ ] Chapter 4: Matrix Transformations
   - [ ] Translation
   - [ ] Scaling

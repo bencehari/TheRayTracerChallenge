@@ -30,6 +30,8 @@ void test_m4x4_inverse2(void);
 void test_m4x4_inverse3(void);
 void test_m4x4_inverse4(void);
 
+void putting_it_together(void);
+
 void test_matrices(void) {
 	puts(AC_YELLOW "Matrices" AC_RESET);
 	
@@ -54,6 +56,8 @@ void test_matrices(void) {
 	test_m4x4_inverse2();
 	test_m4x4_inverse3();
 	test_m4x4_inverse4();
+	
+	putting_it_together();
 }
 
 // ~~~~~~~~~~~
@@ -444,4 +448,68 @@ void test_m4x4_inverse4(void) {
 	
 	// TODO: using m4x4_eq fails
 	printf("Multiplying a product by its inverse: %s\n", EVALUATE(eq_m4(&m, &reverse)));
+}
+
+void putting_it_together(void) {
+	puts("What happens when you invert the identity matrix?");
+	union Matrix4x4 identity = m4x4_IDENTITY;
+	union Matrix4x4 invertedIdentity = m4x4_inverse(&identity);
+	m4x4_print(&invertedIdentity);
+
+	puts("\nWhat do you get when you multiply a matrix by its inverse?");
+	union Matrix4x4 m = { .e = {
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		13, 14, 15, 16
+	}};
+	puts("Original:");
+	m4x4_print(&m);
+	
+	union Matrix4x4 mInverse = m4x4_inverse(&m);
+	union Matrix4x4 mMulByInverse = m4x4_mul(&m, &mInverse);
+	puts("Multiplied by its inverse:");
+	m4x4_print(&mMulByInverse);
+
+	puts("\nIs there any difference between the inverse of the transpose of a matrix,\n"
+	     "and the transpose of the inverse?");
+	union Matrix4x4 m2 = { .e = {
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		13, 14, 15, 16
+	}};
+	puts("Original:");
+	m4x4_print(&m2);
+	
+	m4x4_transpose(&m2);
+	m2 = m4x4_inverse(&m2);
+	puts("Inverse of transpose:");
+	m4x4_print(&m2);
+	
+	m2 = (union Matrix4x4) { .e = {
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		13, 14, 15, 16
+	}};
+	m2 = m4x4_inverse(&m2);
+	m4x4_transpose(&m2);
+	puts("Transpose of inverse:");
+	m4x4_print(&m2);
+
+	puts("\nRemember how multiplying the identity matrix by a tuple gives you the tuple,\n"
+	     "unchanged? Now, try changing any single element of the identity matrix to a\n"
+	     "different number, and then multiplying it by a tuple. What happens to the tuple?");
+	union Tuple t = new_point(4.0f, 3.0f, 2.0f);
+	puts("Original tuple:");
+	tuple_print(&t);
+	
+	identity.e[1] = 10.0f;
+	puts("Modified identity matrix:");
+	m4x4_print(&identity);
+	
+	t = m4x4_mul_tuple(&identity, &t);
+	puts("Result:");
+	tuple_print(&t);
 }
