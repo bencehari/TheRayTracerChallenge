@@ -13,3 +13,9 @@ inline union Matrix4x4 m4x4_translation(union Tuple _t) {
 		[15] = 1.0f
 	}};
 }
+
+inline union Matrix4x4 m4x4_scaling(union Tuple _t) {
+	return (union Matrix4x4) { .e = {
+		[ 0] = _t.x, [ 5] = _t.y, [10] = _t.z, [15] = 1.0f
+	}};
+}
