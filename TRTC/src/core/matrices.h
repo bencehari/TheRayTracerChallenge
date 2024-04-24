@@ -210,6 +210,21 @@ static inline bool m4x4_is_invertable(const union Matrix4x4* _m) {
 	return m4x4_determinant(_m) != 0.0f;
 }
 
+static inline union Matrix4x4 m4x4_inverse(const union Matrix4x4* _m) {
+	float determinant = m4x4_determinant(_m);
+	
+	union Matrix4x4 inverse;
+	for (int r = 0; r < 4; r++) {
+		for (int c = 0; c < 4; c++) {
+			inverse.m[r][c] = m4x4_cofactor(_m, r, c) / determinant;
+		}
+	}
+	
+	m4x4_transpose(&inverse);
+	
+	return inverse;
+}
+
 // ~~~~~~~~~~~
 // DEBUG
 // ~~~~~~~~~~~

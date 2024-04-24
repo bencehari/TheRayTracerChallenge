@@ -1,6 +1,7 @@
 #include "tests.h"
 
 #include <stdio.h>
+#include <math.h>
 
 #include "../core/matrices.h"
 #include "../utils/consc.h"
@@ -24,6 +25,10 @@ void test_m3x3_determinant(void);
 void test_m4x4_cofactor(void);
 void test_m4x4_determinant(void);
 void test_m4x4_is_invertable(void);
+void test_m4x4_inverse(void);
+void test_m4x4_inverse2(void);
+void test_m4x4_inverse3(void);
+void test_m4x4_inverse4(void);
 
 void test_matrices(void) {
 	puts(AC_YELLOW "Matrices" AC_RESET);
@@ -45,7 +50,37 @@ void test_matrices(void) {
 	test_m4x4_cofactor();
 	test_m4x4_determinant();
 	test_m4x4_is_invertable();
+	test_m4x4_inverse();
+	test_m4x4_inverse2();
+	test_m4x4_inverse3();
+	test_m4x4_inverse4();
 }
+
+// ~~~~~~~~~~~
+// Utils
+// ~~~~~~~~~~~
+
+static const float EPSILON = 0.00001f;
+
+static bool feq(float a, float b) {
+	return fabs(a - b) < EPSILON;
+}
+
+static bool eq_m4(union Matrix4x4* _m0, union Matrix4x4* _m1) {
+	return
+		feq(_m0->e[ 0], _m1->e[ 0]) && feq(_m0->e[ 1], _m1->e[ 1]) &&
+		feq(_m0->e[ 2], _m1->e[ 2]) && feq(_m0->e[ 3], _m1->e[ 3]) &&
+		feq(_m0->e[ 4], _m1->e[ 4]) && feq(_m0->e[ 5], _m1->e[ 5]) &&
+		feq(_m0->e[ 6], _m1->e[ 6]) && feq(_m0->e[ 7], _m1->e[ 7]) &&
+		feq(_m0->e[ 8], _m1->e[ 8]) && feq(_m0->e[ 9], _m1->e[ 9]) &&
+		feq(_m0->e[10], _m1->e[10]) && feq(_m0->e[11], _m1->e[11]) &&
+		feq(_m0->e[12], _m1->e[12]) && feq(_m0->e[13], _m1->e[13]) &&
+		feq(_m0->e[14], _m1->e[14]) && feq(_m0->e[15], _m1->e[15]);
+}
+
+// ~~~~~~~~~~~
+// Tests
+// ~~~~~~~~~~~
 
 void test_comp_same(void) {
 	union Matrix4x4 m = { .e = {
@@ -326,4 +361,87 @@ void test_m4x4_is_invertable(void) {
 	
 	printf("Testing an invertible matrix for invertibility: %s\n", EVALUATE(m4x4_is_invertable(&mInvertable)));
 	printf("Testing a noninvertible matrix for invertibility: %s\n", EVALUATE(!m4x4_is_invertable(&mNotInvertable)));
+}
+
+void test_m4x4_inverse(void) {
+	union Matrix4x4 m = { .e = {
+		-5, 2, 6, -8,
+		1, -5, 1, 8,
+		7, 7, -6, -7,
+		1, -3, 7, 4
+	}};
+	union Matrix4x4 mInverse = m4x4_inverse(&m);
+	
+	float mDeterminant = m4x4_determinant(&m);
+	float mCofactor = m4x4_cofactor(&m, 2, 3);
+	float mCofactor2 = m4x4_cofactor(&m, 3, 2);
+
+	bool expected =
+		mDeterminant == 532.0f &&
+		mCofactor == -160.0f &&
+		mInverse.m[3][2] == mCofactor / mDeterminant &&
+		mCofactor2 == 105.0f &&
+		mInverse.m[2][3] == mCofactor2 / mDeterminant;
+	
+	printf("Calculating the inverse of a matrix: %s\n", EVALUATE(expected));
+}
+
+void test_m4x4_inverse2(void) {
+	union Matrix4x4 m = { .e = {
+		8, -5, 9, 2,
+		7, 5, 6, 1,
+		-6, 0, 9, 6,
+		-3, 0, -9, -4
+	}};
+	union Matrix4x4 inverse = m4x4_inverse(&m);
+	union Matrix4x4 expected = { .e = {
+		-0.15385f, -0.15385f, -0.28205f, -0.53846f,
+		-0.07692f, 0.12308f, 0.02564f, 0.03077f,
+		0.35897f, 0.35897f, 0.43590f, 0.92308f,
+		-0.69231, -0.69231, -0.76923, -1.92308
+	}};
+	
+	// TODO: using m4x4_eq fails
+	printf("Calculating the inverse of another matrix: %s\n", EVALUATE(eq_m4(&inverse, &expected)));
+}
+
+void test_m4x4_inverse3(void) {
+	union Matrix4x4 m = { .e = {
+		9, 3, 0, 9,
+		-5, -2, -6, -3,
+		-4, 9, 6, 4,
+		-7, 6, 6, 2
+	}};
+	union Matrix4x4 inverse = m4x4_inverse(&m);
+	union Matrix4x4 expected = { .e = {
+		-0.04074f, -0.07778f, 0.14444f, -0.22222f,
+		-0.07778f, 0.03333f, 0.36667f, -0.33333f,
+		-0.02901f, -0.14630f, -0.10926f, 0.12963f,
+		0.17778f, 0.06667f, -0.26667f, 0.33333
+	}};
+	
+	// TODO: using m4x4_eq fails
+	printf("Calculating the inverse of a third matrix: %s\n", EVALUATE(eq_m4(&inverse, &expected)));
+}
+
+void test_m4x4_inverse4(void) {
+	union Matrix4x4 m = { .e = {
+		3, -9, 7, 3,
+		3, -8, 2, -9,
+		-4, 4, 4, 1,
+		-6, 5, -1, 1
+	}};
+	union Matrix4x4 m2 = { .e = {
+		8, 2, 2, 2,
+		3, -1, 7, 0,
+		7, 0, 5, 4,
+		6, -2, 0, 5
+	}};
+	
+	union Matrix4x4 res = m4x4_mul(&m, &m2);
+	union Matrix4x4 m2Inverse = m4x4_inverse(&m2);
+	union Matrix4x4 reverse = m4x4_mul(&res, &m2Inverse);
+	
+	// TODO: using m4x4_eq fails
+	printf("Multiplying a product by its inverse: %s\n", EVALUATE(eq_m4(&m, &reverse)));
 }

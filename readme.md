@@ -23,6 +23,12 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
 
 - Enjoy
 
+
+
+**Current 'C compiler options' for Debug:** -gdwarf-2;-O0;-std=c99;-Wall;-Winline;-DAD_CHK
+
+
+
 ## Progress
 
 - [x] Chapter One: Tuples, Points, and Vectors
@@ -40,7 +46,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
   - [x] Multiplying Matrices
   - [x] The Identity Matrix
   - [x] Transposing Matrices
-  - [ ] Inverting Matrices
+  - [x] Inverting Matrices
   - [ ] Putting It Together
 - [ ] Chapter 4: Matrix Transformations
   - [ ] Translation
