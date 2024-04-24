@@ -41,7 +41,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
   - [x] Creating a Canvas
   - [x] Saving a Canvas
   - [x] Putting It Together
-- [ ] Chapter 3: Matrices
+- [x] Chapter 3: Matrices
   - [x] Creating a Matrix
   - [x] Multiplying Matrices
   - [x] The Identity Matrix

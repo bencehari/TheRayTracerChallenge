@@ -44,7 +44,8 @@ int main(int argc, char **argv) {
 	
 	render_cleanup();*/
 	
-	test_matrices();
+	// test_matrices();
+	test_transformations();
 	
 	puts("ALL DONE\n");
 	
