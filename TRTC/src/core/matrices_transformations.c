@@ -30,3 +30,12 @@ inline union Matrix4x4 m4x4_rotation_x(float _rad) {
 		[15] = 1.0f
 	}};
 }
+
+inline union Matrix4x4 m4x4_rotation_y(float _rad) {
+	return (union Matrix4x4) { .e = {
+		[ 0] = cosf(_rad), [ 2] = sinf(_rad),
+		[ 5] = 1.0f,
+		[ 8] = -sinf(_rad), [10] = cosf(_rad),
+		[15] = 1.0f
+	}};
+}

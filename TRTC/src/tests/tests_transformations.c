@@ -16,8 +16,9 @@ void test_scale(void);
 void test_scale_vector(void);
 void test_inverse_scale(void);
 void test_negative_scale(void);
-void test_rotation(void);
-void test_inverse_rotation(void);
+void test_rotation_x(void);
+void test_inverse_rotation_x(void);
+void test_rotation_y(void);
 
 void test_transformations(void) {
 	test_translation();
@@ -27,8 +28,9 @@ void test_transformations(void) {
 	test_scale_vector();
 	test_inverse_scale();
 	test_negative_scale();
-	test_rotation();
-	test_inverse_rotation();
+	test_rotation_x();
+	test_inverse_rotation_x();
+	test_rotation_y();
 }
 
 // ~~~~~~~~~~~
@@ -110,7 +112,7 @@ void test_negative_scale(void) {
 	RESULT("Reflection is scaling by a negative value", tuple_eq(res, new_point(-2.0f, 3.0f, 4.0f)));
 }
 
-void test_rotation(void) {
+void test_rotation_x(void) {
 	union Tuple point = new_point(0.0f, 1.0f, 0.0f);
 	union Matrix4x4 halfQuarter = m4x4_rotation_x(M_PI / 4.0f);
 	union Matrix4x4 fullQuarter = m4x4_rotation_x(M_PI / 2.0f);
@@ -122,7 +124,7 @@ void test_rotation(void) {
 	RESULT("Rotating a point around the x axis", expected);
 }
 
-void test_inverse_rotation(void) {
+void test_inverse_rotation_x(void) {
 	union Tuple point = new_point(0.0f, 1.0f, 0.0f);
 	union Matrix4x4 halfQuarter = m4x4_rotation_x(M_PI / 4.0f);
 	union Matrix4x4 inverse = m4x4_inverse(&halfQuarter);
@@ -131,4 +133,16 @@ void test_inverse_rotation(void) {
 		eq_t(m4x4_mul_tuple(&inverse, &point), new_point(0.0f, sqrtf(2.0f) / 2.0f, -(sqrtf(2.0f) / 2.0f)));
 	
 	RESULT("The inverse of an x-rotation rotates in the opposite direction", expected);
+}
+
+void test_rotation_y(void) {
+	union Tuple point = new_point(0.0f, 0.0f, 1.0f);
+	union Matrix4x4 halfQuarter = m4x4_rotation_y(M_PI / 4.0f);
+	union Matrix4x4 fullQuarter = m4x4_rotation_y(M_PI / 2.0f);
+	
+	bool expected =
+		eq_t(m4x4_mul_tuple(&halfQuarter, &point), new_point(sqrtf(2.0f) / 2.0f, 0.0f, sqrtf(2.0f) / 2.0f)) &&
+		eq_t(m4x4_mul_tuple(&fullQuarter, &point), new_point(1.0f, 0.0f, 0.0f));
+	
+	RESULT("Rotating a point around the y axis", expected);
 }

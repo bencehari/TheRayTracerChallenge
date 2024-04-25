@@ -42,6 +42,7 @@ extern union Matrix4x4 m4x4_inverse(const union Matrix4x4* _m);
 extern union Matrix4x4 m4x4_translation(union Tuple _t);
 extern union Matrix4x4 m4x4_scaling(union Tuple _t);
 extern union Matrix4x4 m4x4_rotation_x(float _rad);
+extern union Matrix4x4 m4x4_rotation_y(float _rad);
 // DEBUG
 extern void m4x4_print(const union Matrix4x4* _m);
 extern void m3x3_print(const union Matrix3x3* _m);
