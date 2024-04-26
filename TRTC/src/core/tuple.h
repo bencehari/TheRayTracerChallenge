@@ -6,7 +6,7 @@
 #include <math.h>
 
 union Tuple {
-	struct v {
+	struct {
 		float x, y, z, w;
 	};
 	float e[4];

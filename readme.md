@@ -25,7 +25,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
 
 
 
-**Current 'C compiler options' for Debug:** -gdwarf-2;-O0;-std=c99;-Wall;-Winline;-DAD_CHK
+**Current 'C compiler options' for Debug:** -gdwarf-2;-O0;-std=c11;-Wall;-Winline;-pedantic;-DAD_CHK
 
 
 
@@ -51,7 +51,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
 - [ ] Chapter 4: Matrix Transformations
   - [x] Translation
   - [x] Scaling
-  - [ ] Rotation
+  - [x] Rotation
   - [ ] Shearing
   - [ ] Chaining Transformations
   - [ ] Putting It Together

@@ -19,6 +19,7 @@ void test_negative_scale(void);
 void test_rotation_x(void);
 void test_inverse_rotation_x(void);
 void test_rotation_y(void);
+void test_rotation_z(void);
 
 void test_transformations(void) {
 	test_translation();
@@ -31,6 +32,7 @@ void test_transformations(void) {
 	test_rotation_x();
 	test_inverse_rotation_x();
 	test_rotation_y();
+	test_rotation_z();
 }
 
 // ~~~~~~~~~~~
@@ -145,4 +147,16 @@ void test_rotation_y(void) {
 		eq_t(m4x4_mul_tuple(&fullQuarter, &point), new_point(1.0f, 0.0f, 0.0f));
 	
 	RESULT("Rotating a point around the y axis", expected);
+}
+
+void test_rotation_z(void) {
+	union Tuple point = new_point(0.0f, 1.0f, 0.0f);
+	union Matrix4x4 halfQuarter = m4x4_rotation_z(M_PI / 4.0f);
+	union Matrix4x4 fullQuarter = m4x4_rotation_z(M_PI / 2.0f);
+	
+	bool expected =
+		eq_t(m4x4_mul_tuple(&halfQuarter, &point), new_point(-(sqrtf(2.0f) / 2.0f), sqrtf(2.0f) / 2.0f, 0.0f)) &&
+		eq_t(m4x4_mul_tuple(&fullQuarter, &point), new_point(-1.0f, 0.0f, 0.0f));
+	
+	RESULT("Rotating a point around the z axis", expected);
 }
