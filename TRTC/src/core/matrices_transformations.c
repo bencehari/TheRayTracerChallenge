@@ -7,7 +7,16 @@
 	#include "../utils/log.h"
 #endif
 
-inline union Matrix4x4 m4x4_translation(union Tuple _t) {
+inline union Matrix4x4 m4x4_translation(float _x, float _y, float _z) {
+	return (union Matrix4x4) { .e = {
+		[ 0] = 1.0f, [ 3] = _x,
+		[ 5] = 1.0f, [ 7] = _y,
+		[10] = 1.0f, [11] = _z,
+		[15] = 1.0f
+	}};
+}
+
+inline union Matrix4x4 m4x4_translation_t(union Tuple _t) {
 	return (union Matrix4x4) { .e = {
 		[ 0] = 1.0f, [ 3] = _t.x,
 		[ 5] = 1.0f, [ 7] = _t.y,
@@ -16,7 +25,13 @@ inline union Matrix4x4 m4x4_translation(union Tuple _t) {
 	}};
 }
 
-inline union Matrix4x4 m4x4_scaling(union Tuple _t) {
+inline union Matrix4x4 m4x4_scaling(float _x, float _y, float _z) {
+	return (union Matrix4x4) { .e = {
+		[ 0] = _x, [ 5] = _y, [10] = _z, [15] = 1.0f
+	}};
+}
+
+inline union Matrix4x4 m4x4_scaling_t(union Tuple _t) {
 	return (union Matrix4x4) { .e = {
 		[ 0] = _t.x, [ 5] = _t.y, [10] = _t.z, [15] = 1.0f
 	}};
@@ -56,4 +71,9 @@ inline union Matrix4x4 m4x4_shearing(float _xy, float _xz, float _yx, float _yz,
 		[ 8] = _zx, [ 9] = _zy, [10] = 1.0f,
 		[15] = 1.0f
 	}};
+}
+
+inline union Matrix4x4 m4x4_transform(const union Matrix4x4* _translation, const union Matrix4x4* _scale, const union Matrix4x4* _rotation) {
+	union Matrix4x4 mTransScale = m4x4_mul(_translation, _scale);
+	return m4x4_mul(&mTransScale, _rotation);
 }

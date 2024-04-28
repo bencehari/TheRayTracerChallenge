@@ -26,6 +26,9 @@ void test_shearing_3(void);
 void test_shearing_4(void);
 void test_shearing_5(void);
 void test_shearing_6(void);
+void test_chain_transformations(void);
+void test_chain_transformations_2(void);
+void test_chain_transformations_3(void);
 
 void test_transformations(void) {
 	test_translation();
@@ -45,6 +48,9 @@ void test_transformations(void) {
 	test_shearing_4();
 	test_shearing_5();
 	test_shearing_6();
+	test_chain_transformations();
+	test_chain_transformations_2();
+	test_chain_transformations_3();
 }
 
 // ~~~~~~~~~~~
@@ -69,7 +75,7 @@ static bool eq_t(const union Tuple _t0, const union Tuple _t1) {
 // ~~~~~~~~~~~
 
 void test_translation(void) {
-	union Matrix4x4 transform = m4x4_translation(new_point(5.0f, -3.0f, 2.0f));
+	union Matrix4x4 transform = m4x4_translation_t(new_point(5.0f, -3.0f, 2.0f));
 	union Tuple point = new_point(-3.0f, 4.0f, 5.0f);
 	union Tuple res = m4x4_mul_tuple(&transform, &point);
 	
@@ -77,7 +83,7 @@ void test_translation(void) {
 }
 
 void test_inverse_translation(void) {
-	union Matrix4x4 transform = m4x4_translation(new_point(5.0f, -3.0f, 2.0f));
+	union Matrix4x4 transform = m4x4_translation_t(new_point(5.0f, -3.0f, 2.0f));
 	union Matrix4x4 inverse = m4x4_inverse(&transform);
 	union Tuple point = new_point(-3.0f, 4.0f, 5.0f);
 	union Tuple res = m4x4_mul_tuple(&inverse, &point);
@@ -86,7 +92,7 @@ void test_inverse_translation(void) {
 }
 
 void test_translate_vector(void) {
-	union Matrix4x4 transform = m4x4_translation(new_point(5.0f, -3.0f, 2.0f));
+	union Matrix4x4 transform = m4x4_translation_t(new_point(5.0f, -3.0f, 2.0f));
 	union Tuple vector = new_vector(-3.0f, 4.0f, 5.0f);
 	union Tuple res = m4x4_mul_tuple(&transform, &vector);
 	
@@ -94,7 +100,7 @@ void test_translate_vector(void) {
 }
 
 void test_scale(void) {
-	union Matrix4x4 transform = m4x4_scaling(new_point(2.0f, 3.0f, 4.0f));
+	union Matrix4x4 transform = m4x4_scaling_t(new_point(2.0f, 3.0f, 4.0f));
 	union Tuple point = new_point(-4.0f, 6.0f, 8.0f);
 	union Tuple res = m4x4_mul_tuple(&transform, &point);
 	
@@ -102,7 +108,7 @@ void test_scale(void) {
 }
 
 void test_scale_vector(void) {
-	union Matrix4x4 transform = m4x4_scaling(new_point(2.0f, 3.0f, 4.0f));
+	union Matrix4x4 transform = m4x4_scaling_t(new_point(2.0f, 3.0f, 4.0f));
 	union Tuple vector = new_vector(-4.0f, 6.0f, 8.0f);
 	union Tuple res = m4x4_mul_tuple(&transform, &vector);
 	
@@ -110,7 +116,7 @@ void test_scale_vector(void) {
 }
 
 void test_inverse_scale(void) {
-	union Matrix4x4 transform = m4x4_scaling(new_point(2.0f, 3.0f, 4.0f));
+	union Matrix4x4 transform = m4x4_scaling_t(new_point(2.0f, 3.0f, 4.0f));
 	union Matrix4x4 inverse = m4x4_inverse(&transform);
 	union Tuple vector = new_vector(-4.0f, 6.0f, 8.0f);
 	union Tuple res = m4x4_mul_tuple(&inverse, &vector);
@@ -119,7 +125,7 @@ void test_inverse_scale(void) {
 }
 
 void test_negative_scale(void) {
-	union Matrix4x4 transform = m4x4_scaling(new_point(-1.0f, 1.0f, 1.0f));
+	union Matrix4x4 transform = m4x4_scaling_t(new_point(-1.0f, 1.0f, 1.0f));
 	union Tuple point = new_point(2.0f, 3.0f, 4.0f);
 	union Tuple res = m4x4_mul_tuple(&transform, &point);
 	
@@ -210,9 +216,6 @@ void test_shearing_5(void) {
 	union Tuple point = new_point(2.0f, 3.0f, 4.0f);
 	bool expected = tuple_eq(m4x4_mul_tuple(&transform, &point), new_point(2.0f, 3.0f, 6.0f));
 
-	union Tuple t = m4x4_mul_tuple(&transform, &point);
-	tuple_print(&t);
-
 	RESULT("A shearing transformation moves z in proportion to x", expected);
 }
 
@@ -222,4 +225,47 @@ void test_shearing_6(void) {
 	bool expected = tuple_eq(m4x4_mul_tuple(&transform, &point), new_point(2.0f, 3.0f, 7.0f));
 
 	RESULT("A shearing transformation moves z in proportion to y", expected);
+}
+
+void test_chain_transformations(void) {
+	union Tuple p = new_point(1.0f, 0.0f, 1.0f);
+	union Matrix4x4 mRot = m4x4_rotation_x(M_PI * 0.5f);
+	union Matrix4x4 mScale = m4x4_scaling(5.0f, 5.0f, 5.0f);
+	union Matrix4x4 mTrans = m4x4_translation(10.f, 5.0f, 7.0f);
+	
+	union Tuple p2 = m4x4_mul_tuple(&mRot, &p);
+	bool expected = eq_t(p2, new_point(1.0f, -1.0f, 0.0f));
+	
+	union Tuple p3 = m4x4_mul_tuple(&mScale, &p2);
+	expected &= eq_t(p3, new_point(5.0f, -5.0f, 0.0f));
+	
+	union Tuple p4 = m4x4_mul_tuple(&mTrans, &p3);
+	expected &= eq_t(p4, new_point(15.0f, 0.0f, 7.0f));
+	
+	RESULT("Individual transformations are applied in sequence", expected);
+}
+
+void test_chain_transformations_2(void) {
+	union Tuple p = new_point(1.0f, 0.0f, 1.0f);
+	union Matrix4x4 mRot = m4x4_rotation_x(M_PI * 0.5f);
+	union Matrix4x4 mScale = m4x4_scaling(5.0f, 5.0f, 5.0f);
+	union Matrix4x4 mTrans = m4x4_translation(10.f, 5.0f, 7.0f);
+	
+	union Matrix4x4 mTransScale = m4x4_mul(&mTrans, &mScale);
+	union Matrix4x4 transform = m4x4_mul(&mTransScale, &mRot);
+	bool expected = eq_t(m4x4_mul_tuple(&transform, &p), new_point(15.0f, 0.0f, 7.0f));
+	
+	RESULT("Chained transformations must be applied in reverse order", expected);
+}
+
+void test_chain_transformations_3(void) {
+	union Tuple p = new_point(1.0f, 0.0f, 1.0f);
+	union Matrix4x4 mRot = m4x4_rotation_x(M_PI * 0.5f);
+	union Matrix4x4 mScale = m4x4_scaling(5.0f, 5.0f, 5.0f);
+	union Matrix4x4 mTrans = m4x4_translation(10.f, 5.0f, 7.0f);
+	
+	union Matrix4x4 transform = m4x4_transform(&mTrans, &mScale, &mRot);
+	bool expected = eq_t(m4x4_mul_tuple(&transform, &p), new_point(15.0f, 0.0f, 7.0f));
+	
+	RESULT("Chained transformations in one step", expected);
 }

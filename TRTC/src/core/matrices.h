@@ -39,12 +39,21 @@ extern float m4x4_determinant(const union Matrix4x4* _m);
 extern bool m4x4_is_invertable(const union Matrix4x4* _m);
 extern union Matrix4x4 m4x4_inverse(const union Matrix4x4* _m);
 // TRANSFORMATIONS
-extern union Matrix4x4 m4x4_translation(union Tuple _t);
-extern union Matrix4x4 m4x4_scaling(union Tuple _t);
+extern union Matrix4x4 m4x4_translation(float _x, float _y, float _z);
+extern union Matrix4x4 m4x4_translation_t(union Tuple _t);
+extern union Matrix4x4 m4x4_scaling(float _x, float _y, float _z);
+extern union Matrix4x4 m4x4_scaling_t(union Tuple _t);
 extern union Matrix4x4 m4x4_rotation_x(float _rad);
 extern union Matrix4x4 m4x4_rotation_y(float _rad);
 extern union Matrix4x4 m4x4_rotation_z(float _rad);
-extern union Matrix4x4 m4x4_shearing(float _xy, float _xz, float _yx, float _yz, float _zx, float _zy);
+extern union Matrix4x4 m4x4_shearing(
+	float _xy, float _xz,
+	float _yx, float _yz,
+	float _zx, float _zy);
+extern union Matrix4x4 m4x4_transform(
+	const union Matrix4x4* _translation,
+	const union Matrix4x4* _scale,
+	const union Matrix4x4* _rotation);
 // DEBUG
 extern void m4x4_print(const union Matrix4x4* _m);
 extern void m3x3_print(const union Matrix3x3* _m);
