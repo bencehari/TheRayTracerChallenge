@@ -44,6 +44,7 @@ extern union Matrix4x4 m4x4_scaling(union Tuple _t);
 extern union Matrix4x4 m4x4_rotation_x(float _rad);
 extern union Matrix4x4 m4x4_rotation_y(float _rad);
 extern union Matrix4x4 m4x4_rotation_z(float _rad);
+extern union Matrix4x4 m4x4_shearing(float _xy, float _xz, float _yx, float _yz, float _zx, float _zy);
 // DEBUG
 extern void m4x4_print(const union Matrix4x4* _m);
 extern void m3x3_print(const union Matrix3x3* _m);

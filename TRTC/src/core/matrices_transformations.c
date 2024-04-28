@@ -48,3 +48,12 @@ inline union Matrix4x4 m4x4_rotation_z(float _rad) {
 		[15] = 1.0f
 	}};
 }
+
+inline union Matrix4x4 m4x4_shearing(float _xy, float _xz, float _yx, float _yz, float _zx, float _zy) {
+	return (union Matrix4x4) { .e = {
+		[ 0] = 1.0f, [ 1] = _xy, [ 2] = _xz,
+		[ 4] = _yx, [ 5] = 1.0f, [ 6] = _yz,
+		[ 8] = _zx, [ 9] = _zy, [10] = 1.0f,
+		[15] = 1.0f
+	}};
+}

@@ -52,7 +52,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
   - [x] Translation
   - [x] Scaling
   - [x] Rotation
-  - [ ] Shearing
+  - [x] Shearing
   - [ ] Chaining Transformations
   - [ ] Putting It Together
 - [ ] Chapter 5: Ray-Sphere Intersections

@@ -20,6 +20,12 @@ void test_rotation_x(void);
 void test_inverse_rotation_x(void);
 void test_rotation_y(void);
 void test_rotation_z(void);
+void test_shearing(void);
+void test_shearing_2(void);
+void test_shearing_3(void);
+void test_shearing_4(void);
+void test_shearing_5(void);
+void test_shearing_6(void);
 
 void test_transformations(void) {
 	test_translation();
@@ -33,6 +39,12 @@ void test_transformations(void) {
 	test_inverse_rotation_x();
 	test_rotation_y();
 	test_rotation_z();
+	test_shearing();
+	test_shearing_2();
+	test_shearing_3();
+	test_shearing_4();
+	test_shearing_5();
+	test_shearing_6();
 }
 
 // ~~~~~~~~~~~
@@ -159,4 +171,55 @@ void test_rotation_z(void) {
 		eq_t(m4x4_mul_tuple(&fullQuarter, &point), new_point(-1.0f, 0.0f, 0.0f));
 	
 	RESULT("Rotating a point around the z axis", expected);
+}
+
+void test_shearing(void) {
+	union Matrix4x4 transform = m4x4_shearing(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	union Tuple point = new_point(2.0f, 3.0f, 4.0f);
+	bool expected = tuple_eq(m4x4_mul_tuple(&transform, &point), new_point(5.0f, 3.0f, 4.0f));
+
+	RESULT("A shearing transformation moves x in proportion to y", expected);
+}
+
+void test_shearing_2(void) {
+	union Matrix4x4 transform = m4x4_shearing(0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	union Tuple point = new_point(2.0f, 3.0f, 4.0f);
+	bool expected = tuple_eq(m4x4_mul_tuple(&transform, &point), new_point(6.0f, 3.0f, 4.0f));
+
+	RESULT("A shearing transformation moves x in proportion to z", expected); 
+}
+
+void test_shearing_3(void) {
+	union Matrix4x4 transform = m4x4_shearing(0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+	union Tuple point = new_point(2.0f, 3.0f, 4.0f);
+	bool expected = tuple_eq(m4x4_mul_tuple(&transform, &point), new_point(2.0f, 5.0f, 4.0f));
+
+	RESULT("A shearing transformation moves y in proportion to x", expected);
+}
+
+void test_shearing_4(void) {
+	union Matrix4x4 transform = m4x4_shearing(0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+	union Tuple point = new_point(2.0f, 3.0f, 4.0f);
+	bool expected = tuple_eq(m4x4_mul_tuple(&transform, &point), new_point(2.0f, 7.0f, 4.0f));
+
+	RESULT("A shearing transformation moves y in proportion to z", expected);
+}
+
+void test_shearing_5(void) {
+	union Matrix4x4 transform = m4x4_shearing(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	union Tuple point = new_point(2.0f, 3.0f, 4.0f);
+	bool expected = tuple_eq(m4x4_mul_tuple(&transform, &point), new_point(2.0f, 3.0f, 6.0f));
+
+	union Tuple t = m4x4_mul_tuple(&transform, &point);
+	tuple_print(&t);
+
+	RESULT("A shearing transformation moves z in proportion to x", expected);
+}
+
+void test_shearing_6(void) {
+	union Matrix4x4 transform = m4x4_shearing(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+	union Tuple point = new_point(2.0f, 3.0f, 4.0f);
+	bool expected = tuple_eq(m4x4_mul_tuple(&transform, &point), new_point(2.0f, 3.0f, 7.0f));
+
+	RESULT("A shearing transformation moves z in proportion to y", expected);
 }
