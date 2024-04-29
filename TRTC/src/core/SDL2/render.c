@@ -46,7 +46,25 @@ int render_init(const int _width, const int _height) {
 	return EXIT_SUCCESS;
 }
 
-void render_update_screen(uint32_t _pixels[]) {
+void render_set_screen(uint32_t _pixels[]) {
+	SDL_UpdateTexture(texture, NULL, _pixels, width * sizeof(uint32_t));
+	
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	SDL_RenderPresent(renderer);
+	
+	// testing purposes only until proper input handling
+	SDL_Event event;
+	while (1) {
+		SDL_WaitEvent(&event);
+		switch (event.type) {
+			case SDL_QUIT: return;
+		}
+	}
+}
+
+// NOT TESTED
+void render_update_screen(uint32_t* (*_getPixels)(void)) {
 	bool quit = false;
 	SDL_Event event;
 	while (!quit) {
@@ -55,7 +73,8 @@ void render_update_screen(uint32_t _pixels[]) {
 			case SDL_QUIT: quit = true; break;
 		}
 		
-		SDL_UpdateTexture(texture, NULL, _pixels, width * sizeof(uint32_t));
+		uint32_t* pixels = _getPixels();
+		SDL_UpdateTexture(texture, NULL, pixels, width * sizeof(uint32_t));
 		
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, texture, NULL, NULL);

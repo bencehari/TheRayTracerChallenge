@@ -31,7 +31,7 @@ void test_m4x4_inverse2(void);
 void test_m4x4_inverse3(void);
 void test_m4x4_inverse4(void);
 
-void putting_it_together(void);
+void matrices_putting_it_together(void);
 
 void test_matrices(void) {
 	puts(AC_YELLOW "Matrices" AC_RESET);
@@ -59,7 +59,7 @@ void test_matrices(void) {
 	test_m4x4_inverse3();
 	test_m4x4_inverse4();
 	
-	putting_it_together();
+	matrices_putting_it_together();
 }
 
 // ~~~~~~~~~~~
@@ -467,7 +467,7 @@ void test_m4x4_inverse4(void) {
 	printf("Multiplying a product by its inverse: %s\n", EVALUATE(eq_m4(&m, &reverse)));
 }
 
-void putting_it_together(void) {
+void matrices_putting_it_together(void) {
 	puts("\nWhat happens when you invert the identity matrix?");
 	union Matrix4x4 identity = m4x4_IDENTITY;
 	union Matrix4x4 invertedIdentity = m4x4_inverse(&identity);

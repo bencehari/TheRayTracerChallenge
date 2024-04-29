@@ -6,6 +6,13 @@
 #include "../core/matrices.h"
 #include "../utils/consc.h"
 
+// putting it together
+#include "../core/render.h"
+#include "../core/canvas.h"
+#include "../core/color.h"
+#include "../core/tuple.h"
+
+
 #define EVALUATE(_expr) ((_expr) ? (AC_GREEN "PASS" AC_RESET) : (AC_RED "FAIL" AC_RESET))
 #define RESULT(_text, _eval_expr) (printf(_text": %s\n", EVALUATE((_eval_expr))))
 
@@ -30,6 +37,8 @@ void test_chain_transformations(void);
 void test_chain_transformations_2(void);
 void test_chain_transformations_3(void);
 
+void transformations_putting_it_together(void);
+
 void test_transformations(void) {
 	test_translation();
 	test_inverse_translation();
@@ -51,6 +60,8 @@ void test_transformations(void) {
 	test_chain_transformations();
 	test_chain_transformations_2();
 	test_chain_transformations_3();
+	
+	transformations_putting_it_together();
 }
 
 // ~~~~~~~~~~~
@@ -268,4 +279,42 @@ void test_chain_transformations_3(void) {
 	bool expected = eq_t(m4x4_mul_tuple(&transform, &p), new_point(15.0f, 0.0f, 7.0f));
 	
 	RESULT("Chained transformations in one step", expected);
+}
+
+void transformations_putting_it_together(void) {
+	const int width = 500;
+	const int height = 500;
+	
+	canvas_initialize(width, height, COLOR_BLACK);
+	
+	if (render_init(width, height) != 0) {
+		puts(AC_RED "Initializing render failed..." AC_RESET);
+		return;
+	}
+	
+	union Tuple dot = new_point(0.0f, 200.0f, 0.0f);
+	const union Tuple screenCenter = new_point(width * 0.5f, height * 0.5f, 0.0f);
+	const union Matrix4x4 mRot = m4x4_rotation_z(30.0f * (M_PI / 180.0f));
+	
+	for (int i = 0; i < 12; i++) {
+		dot = m4x4_mul_tuple(&mRot, &dot);
+		union Tuple finalPoint = tuple_add(screenCenter, dot);
+		
+		for (int j = -1; j < 2; j++) {
+			for (int k = -1; k < 2; k++) {
+				canvas_set_pixel(
+					(int)finalPoint.x + j,
+					(int)finalPoint.y + k,
+					COLOR_RED);
+			}
+		}
+	}
+	
+	uint32_t pixels[width * height];
+	canvas_as_argb8888(pixels);
+	canvas_cleanup();
+	
+	render_set_screen(pixels);
+	
+	render_cleanup();
 }

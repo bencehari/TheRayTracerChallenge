@@ -54,7 +54,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
   - [x] Rotation
   - [x] Shearing
   - [x] Chaining Transformations
-  - [ ] Putting It Together
+  - [x] Putting It Together
 - [ ] Chapter 5: Ray-Sphere Intersections
   - [ ] Creating Rays
   - [ ] Intersecting Rays with Spheres
