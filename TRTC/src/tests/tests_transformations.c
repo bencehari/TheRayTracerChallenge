@@ -4,17 +4,12 @@
 #include <math.h>
 
 #include "../core/matrices.h"
-#include "../utils/consc.h"
 
 // putting it together
 #include "../core/render.h"
 #include "../core/canvas.h"
 #include "../core/color.h"
 #include "../core/tuple.h"
-
-
-#define EVALUATE(_expr) ((_expr) ? (AC_GREEN "PASS" AC_RESET) : (AC_RED "FAIL" AC_RESET))
-#define RESULT(_text, _eval_expr) (printf(_text": %s\n", EVALUATE((_eval_expr))))
 
 void test_translation(void);
 void test_inverse_translation(void);

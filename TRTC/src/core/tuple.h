@@ -19,7 +19,7 @@ static inline bool tuple_eq(union Tuple _t0, union Tuple _t1) {
 }
 
 static inline union Tuple new_vector(float _x, float  _y, float _z) {
-	return TUPLE(_x, _y, _z, .0f);
+	return TUPLE(_x, _y, _z, 0.0f);
 }
 
 static inline union Tuple new_point(float _x, float _y, float _z) {
@@ -119,6 +119,14 @@ static inline void tuple_print(union Tuple* _t) {
 	printf(
 		"{ x: %.3f, y: %.3f, z: %.3f, w: %.3f }\n",
 		_t->x, _t->y, _t->z, _t->w);
+}
+
+static inline bool tuple_is_point(union Tuple* _t) {
+	return _t->w != 0.0f;
+}
+
+static inline bool tuple_is_vector(union Tuple* _t) {
+	return _t->w == 0.0f;
 }
 
 #endif // TRTC_TUPLE_H

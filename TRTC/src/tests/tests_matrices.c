@@ -4,9 +4,6 @@
 #include <math.h>
 
 #include "../core/matrices.h"
-#include "../utils/consc.h"
-
-#define EVALUATE(_expr) ((_expr) ? (AC_GREEN "PASS" AC_RESET) : (AC_RED "FAIL" AC_RESET))
 
 void test_comp_same(void);
 void test_comp_diff(void);

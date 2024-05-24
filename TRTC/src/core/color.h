@@ -13,8 +13,8 @@ static inline struct Color new_color(float _r, float  _g, float _b) {
 }
 
 #define COLOR_WHITE new_color(1.0f, 1.0f, 1.0f)
-#define COLOR_RED new_color(1.0f, .0f, .0f)
-#define COLOR_BLACK new_color(.0f, .0f, .0f)
+#define COLOR_RED new_color(1.0f, 0.0f, 0.0f)
+#define COLOR_BLACK new_color(.0f, 0.0f, 0.0f)
 
 static inline struct Color new_color_a(float _r, float  _g, float _b, float _a) {
 	return (struct Color) { _r, _g, _b, _a };
