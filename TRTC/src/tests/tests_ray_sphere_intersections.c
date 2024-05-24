@@ -2,17 +2,25 @@
 
 #include "../core/ray.h"
 #include "../core/tuple.h"
+#include "../core/physics.h"
 
 void test_create_ray(void);
 void test_compute_point_from_distance(void);
+void test_ray_intersects_sphere(void);
+void test_ray_intersects_sphere_at_tangent(void);
+void test_ray_misses_sphere(void);
+void test_ray_originates_inside_sphere(void);
+
 void test_translating_ray(void);
 void test_scaling_ray(void);
 
 void test_ray_sphere_intersections(void) {
 	test_create_ray();
 	test_compute_point_from_distance();
-	test_translating_ray();
-	test_scaling_ray();
+	test_ray_intersects_sphere();
+	test_ray_intersects_sphere_at_tangent();
+	test_ray_misses_sphere();
+	test_ray_originates_inside_sphere();
 }
 
 // ~~~~~~~~~~~
@@ -55,10 +63,91 @@ void test_compute_point_from_distance(void) {
 		tuple_eq(ray_position(&ray, 2.5f), new_point(4.5f, 3.0f, 4.0f)));
 }
 
-void test_translating_ray(void) {
+void test_ray_intersects_sphere(void) {
+	union Tuple origin = new_point(0.0f, 0.0f, -5.0f);
+	union Tuple direction = new_vector(0.0f, 0.0f, 1.0f);
 	
+	struct Ray ray = new_ray(origin, direction);
+	struct Sphere sphere = new_sphere();
+	
+	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	
+	bool expected =
+		intersection.shape == SPHERE &&
+		intersection.count == 2 &&
+		intersection.times[0] == 4.0f &&
+		intersection.times[1] == 6.0f;
+	
+	RESULT("A ray intersects a sphere at two points", expected);
 }
 
-void test_scaling_ray(void) {
+void test_ray_intersects_sphere_at_tangent(void) {
+	union Tuple origin = new_point(0.0f, 1.0f, -5.0f);
+	union Tuple direction = new_vector(0.0f, 0.0f, 1.0f);
 	
+	struct Ray ray = new_ray(origin, direction);
+	struct Sphere sphere = new_sphere();
+	
+	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	
+	bool expected =
+		intersection.shape == SPHERE &&
+		intersection.count == 2 &&
+		intersection.times[0] == 5.0f &&
+		intersection.times[1] == 5.0f;
+	
+	RESULT("A ray intersects a sphere at a tangent", expected);
+}
+
+void test_ray_misses_sphere(void) {
+	union Tuple origin = new_point(0.0f, 2.0f, -5.0f);
+	union Tuple direction = new_vector(0.0f, 0.0f, 1.0f);
+	
+	struct Ray ray = new_ray(origin, direction);
+	struct Sphere sphere = new_sphere();
+	
+	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	
+	bool expected =
+		intersection.shape == SPHERE &&
+		intersection.count == 0 &&
+		intersection.times == NULL;
+	
+	RESULT("A ray misses a sphere", expected);
+}
+
+void test_ray_originates_inside_sphere(void) {
+	union Tuple origin = new_point(0.0f, 0.0f, 0.0f);
+	union Tuple direction = new_vector(0.0f, 0.0f, 1.0f);
+	
+	struct Ray ray = new_ray(origin, direction);
+	struct Sphere sphere = new_sphere();
+	
+	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	
+	bool expected =
+		intersection.shape == SPHERE &&
+		intersection.count == 2 &&
+		intersection.times[0] == -1.0f &&
+		intersection.times[1] == 1.0f;
+	
+	RESULT("A ray originates inside a sphere", expected);
+}
+
+void test_sphere_behind_ray(void) {
+	union Tuple origin = new_point(0.0f, 0.0f, 5.0f);
+	union Tuple direction = new_vector(0.0f, 0.0f, 1.0f);
+	
+	struct Ray ray = new_ray(origin, direction);
+	struct Sphere sphere = new_sphere();
+	
+	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	
+	bool expected =
+		intersection.shape == SPHERE &&
+		intersection.count == 2 &&
+		intersection.times[0] == -6.0f &&
+		intersection.times[1] == -4.0f;
+	
+	RESULT("A sphere is behind a ray", expected);
 }
