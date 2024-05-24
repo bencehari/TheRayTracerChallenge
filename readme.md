@@ -48,7 +48,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
   - [x] Transposing Matrices
   - [x] Inverting Matrices
   - [x] Putting It Together
-- [ ] Chapter 4: Matrix Transformations
+- [x] Chapter 4: Matrix Transformations
   - [x] Translation
   - [x] Scaling
   - [x] Rotation
@@ -56,7 +56,7 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
   - [x] Chaining Transformations
   - [x] Putting It Together
 - [ ] Chapter 5: Ray-Sphere Intersections
-  - [ ] Creating Rays
+  - [x] Creating Rays
   - [ ] Intersecting Rays with Spheres
   - [ ] Tracking Intersections
   - [ ] Identifying Hits
