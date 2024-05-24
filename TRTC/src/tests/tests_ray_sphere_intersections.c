@@ -10,9 +10,10 @@ void test_ray_intersects_sphere(void);
 void test_ray_intersects_sphere_at_tangent(void);
 void test_ray_misses_sphere(void);
 void test_ray_originates_inside_sphere(void);
-
-void test_translating_ray(void);
-void test_scaling_ray(void);
+void test_intersection_hit_1(void);
+void test_intersection_hit_2(void);
+void test_intersection_hit_3(void);
+void test_intersection_hit_4(void);
 
 void test_ray_sphere_intersections(void) {
 	test_create_ray();
@@ -21,6 +22,10 @@ void test_ray_sphere_intersections(void) {
 	test_ray_intersects_sphere_at_tangent();
 	test_ray_misses_sphere();
 	test_ray_originates_inside_sphere();
+	test_intersection_hit_1();
+	test_intersection_hit_2();
+	test_intersection_hit_3();
+	test_intersection_hit_4();
 }
 
 // ~~~~~~~~~~~
@@ -154,4 +159,43 @@ void test_sphere_behind_ray(void) {
 		intersection.times[1] == -4.0f;
 	
 	RESULT("A sphere is behind a ray", expected);
+}
+
+void test_intersection_hit_1(void) {
+	struct Intersection i1 = { .count = 2, .times = { 1.0f, 2.0f } };
+	struct Hit hit = get_hit_from_intersections(&i1, 1);
+	// hit_print(&hit);
+	
+	bool expected = hit.intersection == &i1 && hit.index == 0;
+	RESULT("The hit, when all intersections have positive t", expected);
+}
+
+void test_intersection_hit_2(void) {
+	struct Intersection i1 = { .count = 2, .times = { -1.0f, 1.0f } };
+	struct Hit hit = get_hit_from_intersections(&i1, 1);
+	// hit_print(&hit);
+	
+	bool expected = hit.intersection == &i1 && hit.index == 1;
+	RESULT("The hit, when some intersections have negative t", expected);
+}
+
+void test_intersection_hit_3(void) {
+	struct Intersection i1 = { .count = 2, .times = { -2.0f, -1.0f } };
+	struct Hit hit = get_hit_from_intersections(&i1, 1);
+	// hit_print(&hit);
+	
+	bool expected = !hit_is_valid(&hit);
+	RESULT("The hit, when all intersections have negative t", expected);
+}
+
+void test_intersection_hit_4(void) {
+	struct Intersection intersections[] = {
+		{ .shape = SPHERE, .count = 2, .times = { 5.0f, 7.0f } },
+		{ .shape = SPHERE, .count = 2, .times = { -3.0f, 2.0f } }
+	};
+	struct Hit hit = get_hit_from_intersections(intersections, 2);
+	// hit_print(&hit);
+	
+	bool expected = hit.intersection == &intersections[1] && hit.index == 1;
+	RESULT("The hit is always the lowest nonnegative intersection", expected);
 }

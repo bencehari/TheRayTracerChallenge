@@ -58,8 +58,8 @@ Implementation of ["The Ray Tracer Challenge" book](https://pragprog.com/titles/
 - [ ] Chapter 5: Ray-Sphere Intersections
   - [x] Creating Rays
   - [x] Intersecting Rays with Spheres
-  - [ ] Tracking Intersections
-  - [ ] Identifying Hits
+  - [x] Tracking Intersections
+  - [x] Identifying Hits
   - [ ] Transforming Rays and Spheres
   - [ ] Putting It Together
 - [ ] Chapter 6: Light and Shading

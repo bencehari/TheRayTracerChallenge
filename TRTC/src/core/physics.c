@@ -2,12 +2,13 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <float.h>
 
 struct Intersection intersect_ray_sphere(struct Ray* _ray, struct Sphere* _sphere) {
 	struct Intersection ret = {
 		.shape = SPHERE,
 		.objectId = _sphere->id,
-		.ray = *_ray
+		.ray = _ray
 	};
 
 	union Tuple sphereToRay = tuple_sub(_ray->origin, _sphere->pos);
@@ -27,4 +28,27 @@ struct Intersection intersect_ray_sphere(struct Ray* _ray, struct Sphere* _spher
 	ret.count = 2;
 	
 	return ret;
+}
+
+struct Hit get_hit_from_intersections(const struct Intersection* _intersections, const int _count) {
+	struct Hit hit = { .intersection = NULL, .index = -1 };
+	
+	float best = FLT_MAX;
+	for (int i = 0; i < _count; i++) {
+		struct Intersection* is = (struct Intersection*)&_intersections[i];
+		if (is->count == 0) continue;
+
+		if (is->times[0] >= 0 && is->times[0] < best) {
+			hit.intersection = is;
+			hit.index = 0;
+			best = is->times[0];
+		}
+		if (is->times[1] >= 0 && is->times[1] < best) {
+			hit.intersection = is;
+			hit.index = 1;
+			best = is->times[1];
+		}
+	}
+	
+	return hit;
 }
