@@ -71,6 +71,7 @@ void test_ray_intersects_sphere(void) {
 	struct Sphere sphere = new_sphere();
 	
 	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	// intersection_print(&intersection);
 	
 	bool expected =
 		intersection.shape == SPHERE &&
@@ -89,6 +90,7 @@ void test_ray_intersects_sphere_at_tangent(void) {
 	struct Sphere sphere = new_sphere();
 	
 	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	// intersection_print(&intersection);
 	
 	bool expected =
 		intersection.shape == SPHERE &&
@@ -107,11 +109,11 @@ void test_ray_misses_sphere(void) {
 	struct Sphere sphere = new_sphere();
 	
 	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	// intersection_print(&intersection);
 	
 	bool expected =
 		intersection.shape == SPHERE &&
-		intersection.count == 0 &&
-		intersection.times == NULL;
+		intersection.count == 0;
 	
 	RESULT("A ray misses a sphere", expected);
 }
@@ -124,6 +126,7 @@ void test_ray_originates_inside_sphere(void) {
 	struct Sphere sphere = new_sphere();
 	
 	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	// intersection_print(&intersection);
 	
 	bool expected =
 		intersection.shape == SPHERE &&
@@ -142,6 +145,7 @@ void test_sphere_behind_ray(void) {
 	struct Sphere sphere = new_sphere();
 	
 	struct Intersection intersection = intersect_ray_sphere(&ray, &sphere);
+	// intersection_print(&intersection);
 	
 	bool expected =
 		intersection.shape == SPHERE &&

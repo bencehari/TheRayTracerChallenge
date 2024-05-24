@@ -28,4 +28,11 @@ static inline union Tuple ray_position(struct Ray* _ray, float _t) {
 	return tuple_add(_ray->origin, tuple_mul_f(_ray->dir, _t));
 }
 
+static inline void ray_print(struct Ray* _ray) {
+	printf("RAY\norigin: ");
+	tuple_print(&_ray->origin);
+	printf("dir: ");
+	tuple_print(&_ray->dir);
+}
+
 #endif // TRTC_RAY_H
