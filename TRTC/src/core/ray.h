@@ -2,6 +2,7 @@
 #define TRTC_RAY_H
 
 #include "tuple.h"
+#include "matrices.h"
 
 #if AD_CHK
 	#include "../utils/log.h"
@@ -26,6 +27,13 @@ static inline struct Ray new_ray(union Tuple _origin, union Tuple _direction) {
 
 static inline union Tuple ray_position(struct Ray* _ray, float _t) {
 	return tuple_add(_ray->origin, tuple_mul_f(_ray->dir, _t));
+}
+
+static inline struct Ray ray_transform(struct Ray* _ray, union Matrix4x4* _m) {
+	return (struct Ray) {
+		.origin = m4x4_mul_tuple(_m, &_ray->origin),
+		.dir = m4x4_mul_tuple(_m, &_ray->dir)
+	};
 }
 
 static inline void ray_print(struct Ray* _ray) {

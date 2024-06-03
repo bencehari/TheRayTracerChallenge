@@ -14,6 +14,8 @@ void test_intersection_hit_1(void);
 void test_intersection_hit_2(void);
 void test_intersection_hit_3(void);
 void test_intersection_hit_4(void);
+void test_translating_ray(void);
+void test_scaling_ray(void);
 
 void test_ray_sphere_intersections(void) {
 	test_create_ray();
@@ -26,6 +28,8 @@ void test_ray_sphere_intersections(void) {
 	test_intersection_hit_2();
 	test_intersection_hit_3();
 	test_intersection_hit_4();
+	test_translating_ray();
+	test_scaling_ray();
 }
 
 // ~~~~~~~~~~~
@@ -199,3 +203,31 @@ void test_intersection_hit_4(void) {
 	bool expected = hit.intersection == &intersections[1] && hit.index == 1;
 	RESULT("The hit is always the lowest nonnegative intersection", expected);
 }
+
+void test_translating_ray(void) {
+	struct Ray ray = new_ray(new_point(1.0f, 2.0f, 3.0f), new_vector(0.0f, 1.0f, 0.0f));
+	union Matrix4x4 m = m4x4_translation(3.0f, 4.0f, 5.0f);
+	struct Ray translated = ray_transform(&ray, &m);
+	
+	bool expected =
+		tuple_eq(translated.origin, new_point(4.0f, 6.0f, 8.0f)) &&
+		tuple_eq(translated.dir, new_vector(0.0f, 1.0f, 0.0f));
+	
+	RESULT("Translating a ray", expected);
+}
+
+void test_scaling_ray(void) {
+	struct Ray ray = new_ray(new_point(1.0f, 2.0f, 3.0f), new_vector(0.0f, 1.0f, 0.0f));
+	union Matrix4x4 m = m4x4_scaling(2.0f, 3.0f, 4.0f);
+	struct Ray translated = ray_transform(&ray, &m);
+	
+	ray_print(&ray);
+	ray_print(&translated);
+	
+	bool expected =
+		tuple_eq(translated.origin, new_point(2.0f, 6.0f, 12.0f)) &&
+		tuple_eq(translated.dir, new_vector(0.0f, 3.0f, 0.0f));
+	
+	RESULT("Scaling a ray", expected);
+}
+
