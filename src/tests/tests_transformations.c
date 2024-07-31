@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 #include <math.h>
+#ifndef M_PI
+	#include "../utils/math_constants.h"
+#endif
 
 #include "../core/matrices.h"
 
@@ -142,7 +145,7 @@ void test_rotation_x(void) {
 	union Tuple point = new_point(0.0f, 1.0f, 0.0f);
 	union Matrix4x4 halfQuarter = m4x4_rotation_x(M_PI / 4.0f);
 	union Matrix4x4 fullQuarter = m4x4_rotation_x(M_PI / 2.0f);
-	
+
 	bool expected =
 		eq_t(m4x4_mul_tuple(&halfQuarter, &point), new_point(0.0f, sqrtf(2.0f) / 2.0f, sqrtf(2.0f) / 2.0f)) &&
 		eq_t(m4x4_mul_tuple(&fullQuarter, &point), new_point(0.0f, 0.0f, 1.0f));
